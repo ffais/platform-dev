@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: aac
-        image: smartcommunitylab/aac:${RELEASE}
+        image: smartcommunitylab/aac:RELEASE
         resources:
           limits:
             memory: "1024Mi"
