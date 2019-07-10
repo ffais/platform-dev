@@ -19,7 +19,6 @@ spec:
         app: platform
         tier: aac
     spec:
-      terminationGracePeriodSeconds: 60
       containers:
       - name: aac
         image: smartcommunitylab/aac:${RELEASE}
@@ -31,10 +30,6 @@ spec:
         imagePullPolicy: "Always"
         ports:
           - containerPort: 8080
-        lifecycle:
-          preStop:
-            exec:
-              command:  ['sh', '-c', 'kill $(pidof java)']
         envFrom:
         - configMapRef:
             name: aac
