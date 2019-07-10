@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aac
+spec:
+  selector:
+    matchLabels:
+      app: platform
+      tier: aac
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: platform
+        tier: aac
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+      - name: aac
+        image: smartcommunitylab/aac:${RELEASE}
+        resources:
+          limits:
+            memory: "1024Mi"
+          requests:
+            memory: "512Mi"
+        imagePullPolicy: "Always"
+        ports:
+          - containerPort: 8080
+        lifecycle:
+          preStop:
+            exec:
+              command:  ['sh', '-c', 'kill $(pidof java)']
+        envFrom:
+        - configMapRef:
+            name: aac
